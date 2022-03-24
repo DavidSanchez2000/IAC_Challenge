@@ -7,12 +7,17 @@ variable "project" {
   
 }
 
-variable "regio" {
+variable "region" {
     default = "us-central1"
   
 }
 
 variable "zone" {
     default = "us-central1-a"
+  
+}
+
+variable "name" {
+    default = "iac_vm"
   
 }

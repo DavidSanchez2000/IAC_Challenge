@@ -24,18 +24,18 @@ provider "google-beta" {
   
 }
 
-resource "google_network_vpc" "iac-vpc" {
+resource "google_compute_network" "iac-vpc" {
     name = "iac-vpc"
     auto_create_subnetworks = false
   
 }
 
-resource "google_network_subnetwork" "iac-subnet" {
+resource "google_compute_subnetwork" "iac-subnet" {
     name = "iac-subnet"
-    ip_range = "10.0.0.0/16"
-    network = google_network_vpc.iac-vpc.self_link
+    ip_cidr_range = "10.0.0.0/16"
+    network = google_compute_network.iac-vpc.self_link
     region = "us-central1"
-    private_ip_google_acces = false  
+    private_ip_google_access = false  
 }
 
 resource "google_compute_instance" "vm_instance" {
@@ -54,16 +54,16 @@ resource "google_compute_instance" "vm_instance" {
     }
 
     network_interface {
-        subnetwork = google_network_subnetwork.iac-subnet.name
-        acces_config{}
+        subnetwork = google_compute_subnetwork.iac-subnet.name
+        access_config{}
     }
 
-    metadata_starup_script = file("script.sh")
+    metadata_startup_script = file("script.sh")
 }
 
-resource "google_network_firewall" "ssh" {
+resource "google_compute_firewall" "ssh" {
     name = "ssh-rule"
-    network = google_network_vpc.iac.vpc.self_link
+    network = google_compute_network.iac-vpc.self_link
     source_ranges = ["0.0.0.0/0"]
     allow{
         protocol = "tcp"
