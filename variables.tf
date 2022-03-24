@@ -34,7 +34,7 @@ variable "ip_range" {
 
 
 variable "project" {
-    default = "avian-volt-340621"
+    default = "iac-challenge-345123"
   
 }
 
