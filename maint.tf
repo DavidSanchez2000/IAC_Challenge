@@ -1,10 +1,10 @@
 terraform {
   backend "remote"{
-      hostname = "app.terraform.io"
-      organization = "iac-exercice"
+      hostname = var.hostname
+      organization = var.organization
 
     workspaces {
-      name = "IAC_Challenge"
+      name = var.name_workspace
     }
   }
 }
@@ -25,30 +25,30 @@ provider "google-beta" {
 }
 
 resource "google_compute_network" "iac-vpc" {
-    name = "iac-vpc"
+    name = var.name_vpc
     auto_create_subnetworks = false
   
 }
 
 resource "google_compute_subnetwork" "iac-subnet" {
-    name = "iac-subnet"
-    ip_cidr_range = "10.0.0.0/16"
+    name = var.name_subnet
+    ip_cidr_range = var.ip_range
     network = google_compute_network.iac-vpc.self_link
-    region = "us-central1"
+    region = var.region
     private_ip_google_access = false  
 }
 
 resource "google_compute_instance" "vm_instance" {
     name = var.name
     zone = var.zone
-    machine_type = "f1-micro"
+    machine_type = var.vm_type
     allow_stopping_for_update = true
   
 
 
     boot_disk {
         initialize_params {
-            image = "centos-cloud/centos-7"
+            image = var.vm_image
         }
 
     }
@@ -62,7 +62,7 @@ resource "google_compute_instance" "vm_instance" {
 }
 
 resource "google_compute_firewall" "ssh" {
-    name = "ssh-rule"
+    name = var.name_fw
     network = google_compute_network.iac-vpc.self_link
     source_ranges = ["0.0.0.0/0"]
     allow{
