@@ -3,5 +3,5 @@
 sudo yum -y install httpd
 sudo systemctl enable httpd
 sudo systemctl start httpd.service 
-sudo echo "<html><body> Holas soy David Arias y esto es mi IaC </body></html>"
+sudo echo "<html><body> Holas soy David Arias y esto es mi IaC </body></html>">> /var/www/html/index.html
 sudo systemctl restart httpd
