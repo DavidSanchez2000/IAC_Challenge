@@ -18,6 +18,6 @@ variable "zone" {
 }
 
 variable "name" {
-    default = "iac_vm"
+    default = "iac-vm"
   
 }
