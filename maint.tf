@@ -44,20 +44,22 @@ resource "google_compute_instance" "vm_instance" {
     machine_type = "f1-micro"
     allow_stopping_for_update = true
   
-}
 
-boot_disk {
-    initialize_params {
-        image = "centos-cloud/centos-7"
+
+    boot_disk {
+        initialize_params {
+            image = "centos-cloud/centos-7"
+        }
+
     }
 
-}
+    network_interface {
+        subnetwork = google_network_subnetwork.iac-subnet.name
+        acces_config{}
+    }
 
-network_interface {
-    subnetwork = google_network_subnetwork.iac-subnet.name
+    metadata_starup_script = file("script.sh")
 }
-
-metadata_starup_script = file("script.sh")
 
 resource "google_network_firewall" "ssh" {
     name = "ssh-rule"
